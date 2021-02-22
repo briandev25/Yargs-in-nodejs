@@ -3,7 +3,7 @@
 // const sum = addition(56,64);
 // console.log(sum);
 
-// const text =require('./notes');
+ const notes =require('./notes.js');
 
 // console.log(text())
 
@@ -34,24 +34,46 @@ yargs.command({
         }
     },
     handler: (argv) =>{
-        console.log("Title: ",argv.title)
-        console.log("Body: ",argv.body)
+      notes.addNotes(argv.title,argv.body)  
     }
 })
 yargs.command({
     command:'remove',
     describe:'Removing a new note',
-    handler: () =>console.log("note removed")
+    builder:{
+        title:{
+              describe:"note title",
+              demandOption:true,
+              type:'string'
+        }
+    },
+    handler: (argv) =>{
+        notes.removeNote(argv.title)
+    }
 })
 yargs.command({
     command:'list',
     describe:'Lists the contents',
-    handler: () =>console.log("listed")
+    handler: () =>{
+        notes.listNotes()
+    }
 })
+
 yargs.command({
     command:'read',
-    describe:'reading a note',
-    handler: () =>console.log("note read")
+    describe:'reading a list',
+    builder:{
+        title:{
+              describe:"note title",
+              demandOption:true,
+              type:'string'
+       
+            }
+        },
+    handler: (argv) =>{
+        console.log(notes.readNote(argv.title))
+    }
+
 })
 console.log(process.argv)
 yargs.parse()
